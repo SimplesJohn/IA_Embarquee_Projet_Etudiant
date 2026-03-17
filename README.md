@@ -67,12 +67,19 @@ The application of the `0.3` threshold on the balanced model yielded the followi
 ### 4.3 The "RNF" Anomaly (Analytical Conclusion)
 Despite oversampling, the RNF (Random Failure) class maintained a 0.00 Recall. We conclude that this is not a model deficiency, but a theoretical limit of supervised learning. By definition, truly random failures do not follow a predictable mathematical pattern in sensor data. A machine learning model cannot reliably predict pure randomness.
 
+## 5. Edge AI Deployment (STM32CubeIDE)
+Deploying deep learning models to microcontrollers requires a deep understanding of the hardware's physical limitations and memory management.
 
-## 5. Edge AI Deployment & Hardware Constraints
-Deploying neural networks to microcontrollers requires strict memory management. 
+### 5.1 Hardware Overview: STM32L4R9 Microcontroller
+To prove that predictive maintenance can be executed entirely on the edge, we deployed our model onto the **STM32L4R9** board. This specific hardware was chosen for its optimal balance of power and efficiency:
+* **Core Architecture:** Arm® Cortex®-M4 with an integrated FPU (Floating-Point Unit). The FPU is absolutely critical for accelerating the complex matrix multiplications required by the neural network during real-time inference.
+* **Memory Capacity:** 2 MB of Flash memory (ROM) and 640 KB of SRAM. This provides ample space to store our DNN weights and handle the input/output sensor buffers without needing external memory chips.
+* **Ultra-Low-Power Profile:** Designed for energy-efficient IoT applications, demonstrating that AI can run continuously on battery-powered industrial sensors on a factory floor.
 
-### 5.1 TensorFlow Versioning Strategy
+### 5.2 TensorFlow Versioning Strategy
 Newer versions of TensorFlow (>2.12) modify the internal serialization of the `Input shape` (dynamic batch sizing). This causes static memory allocation conflicts within `STM32Cube.AI`, which requires a strict inference batch size of `1`. 
-To guarantee a seamless C/C++ conversion, we exported our model as a **`.tflite` (TensorFlow Lite)** file, which is the modern standard for Edge AI and natively bypasses Cube.AI's batch-size conflicts.
+To guarantee a seamless C/C++ conversion, we exported our model as a `.tflite` (TensorFlow Lite) file, which is the modern standard for Edge AI and natively bypasses Cube.AI's batch-size conflicts.
 
-### 5.2 STM32 Integration (Work in Progress)
+### 5.3 STM32 Integration (Work in Progress)
+
+
