@@ -26,8 +26,8 @@ We utilized a professional Git workflow to maintain a clean and scalable codebas
 ├── notebooks/
 │   └── TP_IA_EMBARQUEE.ipynb        # Data preprocessing, training, and evaluation
 └── README.md                        # Project Report
+```
 
----
 ## 🛠️ 3. Data Preprocessing & Methodology
 The model utilizes the **AI4I 2020 Predictive Maintenance Dataset** (10,000 instances, 14 features). To ensure the model learns true physical patterns, strict preprocessing was applied.
 
