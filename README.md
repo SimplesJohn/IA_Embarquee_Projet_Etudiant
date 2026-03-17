@@ -43,3 +43,26 @@ Sensor readings vary drastically in magnitude (e.g., Rotational speed in RPM vs.
 In real-world predictive maintenance, failures are extremely rare (constituting less than 4% of our dataset). 
 * **The Problem:** Standard training results in a "lazy" model that achieves 96% accuracy by simply predicting "No Error" every time.
 * **Our Solution (`RandomOverSampler`):** Instead of using Undersampling (which destroys valuable baseline data from healthy machines), we applied Random Oversampling exclusively to the minority failure classes. This forced the network to heavily penalize missing a failure, preserving 100% of the real-world operational baseline.
+
+## 4. Model Architecture & Threshold Optimization
+We designed a lightweight Multi-Label Deep Neural Network (DNN) tailored for Edge AI.
+
+### 4.1 The 0.3 Decision Threshold (Industrial Strategy)
+The default classification threshold in Machine Learning is `0.5` (50% certainty). However, in the manufacturing industry, missing a catastrophic failure is vastly more expensive than conducting a preventative check.
+
+We deliberately lowered the decision threshold to `0.3`. 
+By making the model highly sensitive to early warning signs, we traded a small decrease in *Precision* (tolerating more false alarms) for a massive spike in *Recall* (catching almost every true failure).
+
+### 4.2 Final Model Performance
+The application of the `0.3` threshold on the balanced model yielded the following results on the unseen Test Set:
+
+| Failure Type | Precision | Recall (Detection Rate) | F1-Score | Status |
+| :--- | :---: | :---: | :---: | :--- |
+| **TWF** (Tool Wear) | 0.11 | **0.45** | 0.18 | *Significant improvement from 0.00* |
+| **HDF** (Heat Dissipation)| 0.52 | **1.00** | 0.68 | *Perfect Detection (100%)* |
+| **PWF** (Power Failure) | 0.65 | **0.85** | 0.74 | *High Reliability* |
+| **OSF** (Overstrain) | 0.68 | **0.94** | 0.79 | *Excellent Detection* |
+| **RNF** (Random Failure)| 0.00 | **0.00** | 0.00 | *Theoretical Limit (See below)* |
+
+### 4.3 The "RNF" Anomaly (Analytical Conclusion)
+Despite oversampling, the RNF (Random Failure) class maintained a 0.00 Recall. We conclude that this is not a model deficiency, but a theoretical limit of supervised learning. By definition, truly random failures do not follow a predictable mathematical pattern in sensor data. A machine learning model cannot reliably predict pure randomness.
