@@ -44,16 +44,32 @@ In real-world predictive maintenance, failures are extremely rare (constituting 
 * **The Problem:** Standard training results in a "lazy" model that achieves 96% accuracy by simply predicting "No Error" every time.
 * **Our Solution (`RandomOverSampler`):** Instead of using Undersampling (which destroys valuable baseline data from healthy machines), we applied Random Oversampling exclusively to the minority failure classes. This forced the network to heavily penalize missing a failure, preserving 100% of the real-world operational baseline.
 
-## 4. Model Architecture & Threshold Optimization
-We designed a lightweight Multi-Label Deep Neural Network (DNN) tailored for Edge AI.
+## 4. Model Architecture & Training Strategy
+We designed an ultra-lightweight Deep Neural Network (DNN) tailored for the strict power and memory constraints of Edge AI, while reflecting the physical reality of mechanical failures.
 
-### 4.1 The 0.3 Decision Threshold (Industrial Strategy)
+### 4.1 Multi-Label vs. Multi-Class Classification
+Unlike standard approaches that force a single output (Softmax), we recognized that industrial machinery can suffer from simultaneous failures (e.g., Tool Wear causing Heat Dissipation Failure). 
+We structured the output layer with 5 neurons using `Sigmoid` activations and optimized it via `binary_crossentropy`. This allows the model to predict multiple independent failures on the same machine simultaneously.
+
+### 4.2 Zero Data Leakage (Strict Real-World Evaluation)
+To ensure the model's metrics reflect true industrial performance, the `RandomOverSampler` was applied strictly to the training set. The Test Set (20% of the data) remained completely untouched and imbalanced, preventing any synthetic data leakage into the evaluation phase.
+
+### 4.3 Ultra-Lightweight Footprint (837 Parameters)
+Instead of relying on heavy layers (Dropout, Batch Normalization) that consume valuable CPU cycles on a microcontroller, we opted for a streamlined architecture:
+* **Input Layer:** 6 Features (Standardized)
+* **Hidden Layers:** 32 Neurons (ReLU) -> 16 Neurons (ReLU)
+* **Output Layer:** 5 Neurons (Sigmoid)
+
+**Total Parameters: 837 (Only 3.27 KB of RAM required during training).**
+This minimalist design ensures ultra-fast inference times and minimal energy consumption on the STM32's Cortex-M4 processor.
+
+### 4.4 The 0.3 Decision Threshold 
 The default classification threshold in Machine Learning is `0.5` (50% certainty). However, in the manufacturing industry, missing a catastrophic failure is vastly more expensive than conducting a preventative check.
 
-We deliberately lowered the decision threshold to `0.3`. 
+We deliberately lowered the decision threshold to `0.3`.
 By making the model highly sensitive to early warning signs, we traded a small decrease in *Precision* (tolerating more false alarms) for a massive spike in *Recall* (catching almost every true failure).
 
-### 4.2 Final Model Performance
+### 4.5 Final Model Performance
 The application of the `0.3` threshold on the balanced model yielded the following results on the unseen Test Set (real-world validation):
 
 | Failure Type | Precision | Recall (Detection Rate) | F1-Score | Support | Status |
@@ -64,8 +80,8 @@ The application of the `0.3` threshold on the balanced model yielded the followi
 | **OSF** (Overstrain) | 0.74 | **0.94** | 0.83 | 18 | *High Detection Rate* |
 | **RNF** (Random Failure)| 0.00 | **0.00** | 0.00 | 6 | *Theoretical Limit (See below)* |
 
-### 4.3 The "RNF" Anomaly (Analytical Conclusion)
-Despite oversampling, the RNF (Random Failure) class maintained a 0.00 Recall. We conclude that this is not a model deficiency, but a theoretical limit of supervised learning. By definition, truly random failures do not follow a predictable mathematical pattern in sensor data. A machine learning model cannot reliably predict pure randomness.
+### 4.6 The "RNF" Anomaly
+Despite oversampling, the **RNF (Random Failure)** class maintained a 0.00 Recall. We conclude that this is not a model deficiency, but a theoretical limit of supervised learning. By definition, *truly random failures do not follow a predictable mathematical pattern in sensor data*. A machine learning model cannot reliably predict pure randomness.
 
 ## 5. Edge AI Deployment (STM32CubeIDE)
 Deploying deep learning models to microcontrollers requires a deep understanding of the hardware's physical limitations and memory management.
