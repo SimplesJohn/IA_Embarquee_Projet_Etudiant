@@ -51,6 +51,8 @@ We designed an ultra-lightweight Deep Neural Network (DNN) tailored for the stri
 Unlike standard approaches that force a single output (Softmax), we recognized that industrial machinery can suffer from simultaneous failures (e.g., Tool Wear causing Heat Dissipation Failure). 
 We structured the output layer with 5 neurons using `Sigmoid` activations and optimized it via `binary_crossentropy`. This allows the model to predict multiple independent failures on the same machine simultaneously.
 
+* The Implicit "No Failure" State: Unlike other approaches that waste memory on a dedicated "Healthy" neuron, our Sigmoid architecture naturally infers normal operation. If all 5 fault probabilities remain below the `0.3` threshold, the model outputs `[0, 0, 0, 0, 0]`, inherently classifying the machine as healthy without requiring additional mathematical operations on the STM32.
+
 ### 4.2 Zero Data Leakage (Strict Real-World Evaluation)
 To ensure the model's metrics reflect true industrial performance, the `RandomOverSampler` was applied strictly to the training set. The Test Set (20% of the data) remained completely untouched and imbalanced, preventing any synthetic data leakage into the evaluation phase.
 
