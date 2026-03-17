@@ -60,6 +60,19 @@ Instead of relying on heavy layers (Dropout, Batch Normalization) that consume v
 * **Hidden Layers:** 32 Neurons (ReLU) -> 16 Neurons (ReLU)
 * **Output Layer:** 5 Neurons (Sigmoid)
 
+**Architecture Implementation:**
+```python
+model_balanced = models.Sequential([
+    layers.Input(shape=(6,)),
+    layers.Dense(32, activation='relu'),
+    layers.Dense(16, activation='relu'),
+    layers.Dense(5, activation='sigmoid') # Sigmoid for independent multi-label failures
+])
+model_balanced.compile(optimizer='adam', loss='binary_crossentropy')
+# Total params: 837 (Optimal for STM32 SRAM constraints)
+**Architecture Implementation:**
+```
+
 **Total Parameters: 837 (Only 3.27 KB of RAM required during training).**
 This minimalist design ensures ultra-fast inference times and minimal energy consumption on the STM32's Cortex-M4 processor.
 
