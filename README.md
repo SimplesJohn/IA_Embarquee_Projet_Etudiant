@@ -70,7 +70,6 @@ model_balanced = models.Sequential([
 ])
 model_balanced.compile(optimizer='adam', loss='binary_crossentropy')
 # Total params: 837 (Optimal for STM32 SRAM constraints)
-**Architecture Implementation:**
 ```
 
 **Total Parameters: 837 (Only 3.27 KB of RAM required during training).**
@@ -78,6 +77,13 @@ This minimalist design ensures ultra-fast inference times and minimal energy con
 
 ### 4.4 The 0.3 Decision Threshold 
 The default classification threshold in Machine Learning is `0.5` (50% certainty). However, in the manufacturing industry, missing a catastrophic failure is vastly more expensive than conducting a preventative check.
+
+```markdown
+**Implementation:**
+```python
+# Shifting the decision boundary to prioritize high Recall in industrial environments
+Y_pred_balanced = (model_balanced.predict(X_test) > 0.3).astype(int)
+```
 
 We deliberately lowered the decision threshold to `0.3`.
 By making the model highly sensitive to early warning signs, we traded a small decrease in *Precision* (tolerating more false alarms) for a massive spike in *Recall* (catching almost every true failure).
