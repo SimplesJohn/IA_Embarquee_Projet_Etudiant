@@ -6,7 +6,7 @@
 > 
 > **Course/Project:** IA Embarquée (Embedded AI)  
 
-## 📌 Project Overview
+## 📌 1. Project Overview
 
 With the rise of Industry 4.0, predictive maintenance has become a critical component of manufacturing. Replacing an entire machine is significantly more expensive than replacing a single worn-out component. By leveraging sensor data (IoT) and Artificial Intelligence, we can predict catastrophic failures before they occur.
 
@@ -27,6 +27,6 @@ We utilized a professional Git workflow to maintain a clean and scalable codebas
 │   └── TP_IA_EMBARQUEE.ipynb        # Data preprocessing, training, and evaluation
 └── README.md                        # Project Report
 
-
+## 🛠️ 3. Data Preprocessing & Methodology
 
 
