@@ -54,15 +54,25 @@ We deliberately lowered the decision threshold to `0.3`.
 By making the model highly sensitive to early warning signs, we traded a small decrease in *Precision* (tolerating more false alarms) for a massive spike in *Recall* (catching almost every true failure).
 
 ### 4.2 Final Model Performance
-The application of the `0.3` threshold on the balanced model yielded the following results on the unseen Test Set:
+The application of the `0.3` threshold on the balanced model yielded the following results on the unseen Test Set (real-world validation):
 
-| Failure Type | Precision | Recall (Detection Rate) | F1-Score | Status |
-| :--- | :---: | :---: | :---: | :--- |
-| **TWF** (Tool Wear) | 0.11 | **0.45** | 0.18 | *Significant improvement from 0.00* |
-| **HDF** (Heat Dissipation)| 0.52 | **1.00** | 0.68 | *Perfect Detection (100%)* |
-| **PWF** (Power Failure) | 0.65 | **0.85** | 0.74 | *High Reliability* |
-| **OSF** (Overstrain) | 0.68 | **0.94** | 0.79 | *Excellent Detection* |
-| **RNF** (Random Failure)| 0.00 | **0.00** | 0.00 | *Theoretical Limit (See below)* |
+| Failure Type | Precision | Recall (Detection Rate) | F1-Score | Support | Status |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **TWF** (Tool Wear) | 0.11 | **0.64** | 0.19 | 11 | *Massive improvement from 0.00* |
+| **HDF** (Heat Dissipation)| 0.57 | **1.00** | 0.72 | 17 | *Perfect Detection (100%)* |
+| **PWF** (Power Failure) | 0.66 | **0.95** | 0.78 | 20 | *Excellent Reliability* |
+| **OSF** (Overstrain) | 0.74 | **0.94** | 0.83 | 18 | *High Detection Rate* |
+| **RNF** (Random Failure)| 0.00 | **0.00** | 0.00 | 6 | *Theoretical Limit (See below)* |
 
 ### 4.3 The "RNF" Anomaly (Analytical Conclusion)
 Despite oversampling, the RNF (Random Failure) class maintained a 0.00 Recall. We conclude that this is not a model deficiency, but a theoretical limit of supervised learning. By definition, truly random failures do not follow a predictable mathematical pattern in sensor data. A machine learning model cannot reliably predict pure randomness.
+
+
+## 5. Edge AI Deployment & Hardware Constraints
+Deploying neural networks to microcontrollers requires strict memory management. 
+
+### 5.1 TensorFlow Versioning Strategy
+Newer versions of TensorFlow (>2.12) modify the internal serialization of the `Input shape` (dynamic batch sizing). This causes static memory allocation conflicts within `STM32Cube.AI`, which requires a strict inference batch size of `1`. 
+To guarantee a seamless C/C++ conversion, we exported our model as a **`.tflite` (TensorFlow Lite)** file, which is the modern standard for Edge AI and natively bypasses Cube.AI's batch-size conflicts.
+
+### 5.2 STM32 Integration (Work in Progress)
