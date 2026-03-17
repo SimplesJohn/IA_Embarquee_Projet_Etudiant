@@ -1,5 +1,6 @@
 # IA_Embarquee_Projet_Etudiant
 > **Authors:** Sofia Castrillon Bayona - João Vitor Apis Bigoloti
+> 
 > **Course/Project:** IA Embarquée (Embedded AI)  
 
 ## 📌 Project Overview
