@@ -82,4 +82,4 @@ To guarantee a seamless C/C++ conversion, we exported our model as a `.tflite` (
 
 ### 5.3 STM32 Integration (Work in Progress)
 
-
+## 6. Conclusion & Future Work
