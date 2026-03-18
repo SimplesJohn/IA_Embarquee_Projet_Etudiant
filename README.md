@@ -85,7 +85,8 @@ model_balanced.compile(optimizer='adam', loss='binary_crossentropy')
 This minimalist design ensures ultra-fast inference times and minimal energy consumption on the STM32's Cortex-M4 processor.
 
 **Edge AI Memory Footprint:**
-![Memory Footprint Report](Figure_1.png)
+![Memory Footprint Report]
+(Figure_1.png)
 *STM32Cube.AI report confirming the DNN requires only ~2.12 KiB of RAM and ~12.77 KiB of Flash memory, leaving ample space for other RTOS tasks.*
 
 ### 4.4 The 0.3 Decision Threshold 
