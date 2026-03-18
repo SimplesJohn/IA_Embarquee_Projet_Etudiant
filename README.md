@@ -85,7 +85,7 @@ model_balanced.compile(optimizer='adam', loss='binary_crossentropy')
 This minimalist design ensures ultra-fast inference times and minimal energy consumption on the STM32's Cortex-M4 processor.
 
 **Edge AI Memory Footprint:**
-![Memory Footprint Report](images/Figure_1.png)
+![Memory Footprint Report](Images/Figure_1.png)
 *STM32Cube.AI report confirming the DNN requires only ~2.12 KiB of RAM and ~12.77 KiB of Flash memory, leaving ample space for other RTOS tasks.*
 
 ### 4.4 The 0.3 Decision Threshold 
@@ -141,7 +141,7 @@ Once the `.tflite` model was verified, we used X-CUBE-AI to generate the optimiz
 The physical deployment was a massive success. Running the test dataset through the physical microcontroller yielded an **Exact Match Accuracy of 96.00%**, perfectly mirroring our software-side simulations. This proves that the quantization and C-code translation introduced zero mathematical degradation.
 
 **Hardware-in-the-Loop Results:**
-![HIL Accuracy](images/Figure_2.png)
+![HIL Accuracy](Images/Figure_2.png)
 *Terminal output confirming 96.00% exact match accuracy running on the physical Cortex-M4 processor.*
 
 ## 6. Conclusion & Future Work
