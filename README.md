@@ -115,6 +115,18 @@ To prove that predictive maintenance can be executed entirely on the edge, we de
 Newer versions of TensorFlow (>2.12) modify the internal serialization of the `Input shape` (dynamic batch sizing). This causes static memory allocation conflicts within `STM32Cube.AI`, which requires a strict inference batch size of `1`. 
 To guarantee a seamless C/C++ conversion, we exported our model as a `.tflite` (TensorFlow Lite) file, which is the modern standard for Edge AI and natively bypasses Cube.AI's batch-size conflicts.
 
-### 5.3 STM32 Integration (Work in Progress)
+### 5.3 STM32 Integration & Hardware-in-the-Loop (HIL) Testing
+Once the `.tflite` model was verified, we used X-CUBE-AI to generate the optimized C firmware. To validate the model's performance on the actual hardware, we established a robust Hardware-in-the-Loop (HIL) testing environment using a custom UART communication protocol between a host machine (Mac/PC) and the STM32.
+
+**The Communication Architecture:**
+* **UART Configuration:** Data transmission was routed through `USART2` at a baud rate of 115200. We specifically bypassed unconfigured peripherals (such as the SD card initialization loop) to ensure immediate and uninterrupted boot sequences.
+* **The Synchronization Handshake:** To prevent buffer overflows and data misalignment, we designed a strict bidirectional handshake. The Python script sends a synchronization byte (`0xAB`), and the STM32 waits in a blocking state until it receives this signal, replying with an acknowledge byte (`0xCD`) before starting the inference loop.
+* **Real-Time Inference:** 1. Python transmits an array of 6 sensor features (24 bytes as `float32`).
+  2. The STM32 receives the data via `HAL_UART_Receive` and feeds it into the `ai_run()` inference engine.
+  3. The Cortex-M4 processor computes the 5 failure probabilities.
+  4. The STM32 transmits the 20-byte result back to Python via `HAL_UART_Transmit`.
+
+**Hardware Performance:**
+The physical deployment was a massive success. Running the test dataset through the physical microcontroller yielded an **Exact Match Accuracy of 96.00%**, perfectly mirroring our software-side simulations. This proves that the quantization and C-code translation introduced zero mathematical degradation.
 
 ## 6. Conclusion & Future Work
