@@ -20,11 +20,18 @@ We utilized a professional Git workflow to maintain a clean and scalable codebas
 ```text
 ├── dataset/
 │   └── ai4i2020.csv                 # Original AI4I 2020 Dataset
+├── FINAL_PROJET/                    # STM32CubeIDE Firmware Project
+│   ├── Core/                        # Main C logic and UART hardware handles
+│   └── X-CUBE-AI/                   # Auto-generated neural network C-code
 ├── models/
 │   ├── modelo_mantenimiento.h5      # Legacy Keras format (TF 2.12 fallback)
 │   └── modelo_mantenimiento.tflite  # Optimized for STM32Cube.AI deployment
 ├── notebooks/
 │   └── TP_IA_EMBARQUEE.ipynb        # Data preprocessing, training, and evaluation
+├── Python_Inference/                # Hardware-in-the-Loop (HIL) testing suite
+│   ├── mantenimiento_stm32.py       # Mac/PC UART synchronization & communication
+│   ├── X_test.npy                   # Unseen test features for physical validation
+│   └── Y_test.npy                   # Ground truth labels
 └── README.md                        # Project Report
 ```
 
