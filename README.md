@@ -137,3 +137,12 @@ Once the `.tflite` model was verified, we used X-CUBE-AI to generate the optimiz
 The physical deployment was a massive success. Running the test dataset through the physical microcontroller yielded an **Exact Match Accuracy of 96.00%**, perfectly mirroring our software-side simulations. This proves that the quantization and C-code translation introduced zero mathematical degradation.
 
 ## 6. Conclusion & Future Work
+
+This project successfully demonstrates the viability of deploying Deep Neural Networks on heavily constrained Edge devices for industrial predictive maintenance. By prioritizing strict data preprocessing and strategic oversampling over complex architectures, we developed a highly sensitive model (0.3 decision threshold) capable of detecting critical machine failures using an ultra-lightweight 837-parameter footprint.
+
+The seamless deployment onto the STM32L4R9 microcontroller, validated by a 96.00% accuracy in Hardware-in-the-Loop testing, proves that advanced AI can operate effectively at the extreme edge. This approach drastically reduces the need for constant cloud connectivity, saving bandwidth, reducing latency, and enhancing data privacy on the factory floor.
+
+**Future Work:**
+* **Live Sensor Integration:** Transitioning from static UART dataset injection to reading live dynamic data from physical sensors (e.g., I2C/SPI industrial accelerometers and temperature probes) connected directly to the STM32.
+* **RTOS Implementation:** Wrapping the `ai_run()` inference engine within a FreeRTOS task to allow for concurrent sensor sampling and asynchronous cloud communication without blocking the main CPU loop.
+* **On-Device Adaptation:** Exploring lightweight federated learning concepts to allow the model to slightly adapt to the specific wear-and-tear patterns of individual machines over time.
