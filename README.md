@@ -23,6 +23,9 @@ We utilized a professional Git workflow to maintain a clean and scalable codebas
 ├── FINAL_PROJET/                    # STM32CubeIDE Firmware Project
 │   ├── Core/                        # Main C logic and UART hardware handles
 │   └── X-CUBE-AI/                   # Auto-generated neural network C-code
+├─ images/
+│   ├─ Figure_1.png
+│   └─ Figure_2.png
 ├── models/
 │   ├── modelo_mantenimiento.h5      # Legacy Keras format (TF 2.12 fallback)
 │   └── modelo_mantenimiento.tflite  # Optimized for STM32Cube.AI deployment
