@@ -105,9 +105,9 @@ The application of the `0.3` threshold on the balanced model yielded the followi
 | Failure Type | Precision | Recall (Detection Rate) | F1-Score | Support | Status |
 | :--- | :---: | :---: | :---: | :---: | :--- |
 | **TWF** (Tool Wear) | 0.11 | **0.64** | 0.19 | 11 | *Massive improvement from 0.00* |
-| **HDF** (Heat Dissipation)| 0.57 | **1.00** | 0.72 | 17 | *Perfect Detection (100%)* |
-| **PWF** (Power Failure) | 0.66 | **0.95** | 0.78 | 20 | *Excellent Reliability* |
-| **OSF** (Overstrain) | 0.74 | **0.94** | 0.83 | 18 | *High Detection Rate* |
+| **HDF** (Heat Dissipation)| 0.38 | **0.94** | 0.54 | 17 | *Perfect Detection (100%)* |
+| **PWF** (Power Failure) | 0.58 | **0.95** | 0.72 | 20 | *Excellent Reliability* |
+| **OSF** (Overstrain) | 0.69 | **1.00** | 0.82 | 18 | *High Detection Rate* |
 | **RNF** (Random Failure)| 0.00 | **0.00** | 0.00 | 6 | *Theoretical Limit (See below)* |
 
 ### 4.6 The "RNF" Anomaly
