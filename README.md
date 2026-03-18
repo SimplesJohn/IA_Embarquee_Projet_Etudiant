@@ -84,6 +84,10 @@ model_balanced.compile(optimizer='adam', loss='binary_crossentropy')
 **Total Parameters: 837 (Only 3.27 KB of RAM required during training).**
 This minimalist design ensures ultra-fast inference times and minimal energy consumption on the STM32's Cortex-M4 processor.
 
+**Edge AI Memory Footprint:**
+![Memory Footprint Report](Figure_1.png)
+*STM32Cube.AI report confirming the DNN requires only ~2.12 KiB of RAM and ~12.77 KiB of Flash memory, leaving ample space for other RTOS tasks.*
+
 ### 4.4 The 0.3 Decision Threshold 
 The default classification threshold in Machine Learning is `0.5` (50% certainty). However, in the manufacturing industry, missing a catastrophic failure is vastly more expensive than conducting a preventative check.
 
